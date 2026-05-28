@@ -8,7 +8,7 @@ const TOKEN_EXPIRE = process.env.TOKEN_EXPIRE;
 
 // Create token
 const createToken = (userId) => {
-  jwt.sign({ userId }, JWT_SECRET, { expiresIn: TOKEN_EXPIRE });
+  return jwt.sign({ _id: userId }, JWT_SECRET, { expiresIn: TOKEN_EXPIRE });
 };
 
 // Registered a user
@@ -87,7 +87,7 @@ export async function loginUser(req, res) {
     res.json({
       success: true,
       message: "User logged in successfully",
-      token,
+      token: token,
       user: { _id: user._id, name: user.name, email: user.email },
     });
   } catch (error) {
@@ -133,7 +133,7 @@ export async function updateProfile(req, res) {
     }
 
     const user = await User.findByIdAndUpdate(
-      req.user.id,
+      req.user._id,
       { name, email },
       { new: true, runValidators: true, select: "name email" },
     );
