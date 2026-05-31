@@ -1,4 +1,6 @@
 import incomeModel from "../models/incomeModel.js";
+import XLSX from "xlsx";
+import getDateRange from "../utils/dateFilter.js";
 
 // Add income
 export async function addIncome(req, res) {
@@ -82,5 +84,43 @@ export async function deleteIncome(req, res) {
       success: true,
       message: "Income deleted successfully",
     })
-  } catch (error) {}
+  } catch (error) {
+      console.log(error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+}
+
+// To download the data in an excel sheet
+export async function downloadIncome(req, res) {
+  const { id } = req.params;
+
+  
+  try {
+    const income = await incomeModel.find({ userId }).sort({ date: -1 });
+    const plainData=income.map((item) => ({
+      Description: item.description,
+      Amount: item.amount,
+      Category: item.category,
+      Date: new Date(item.date).toLocaleDateString(),
+    }))
+
+    const worksheet = XLSX.utils.json_to_sheet(plainData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "incomeModel");
+    XLSX.writeFile(workbook, 'income_details.xlsx');
+    res.download('income_details.xlsx');
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+}
+
+// To get an income overview
+export async function getIncomeOverview(req, res) {
+  try {
+    const userId = req.user._id;
+    const { range='monthly'}=req.query;
+  } catch (error) {
+    
+  }
 }
