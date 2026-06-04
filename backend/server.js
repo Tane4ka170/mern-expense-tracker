@@ -3,6 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import { connectDB } from "./config/db.js";
 import userRouter from "./routes/userRoute.js";
+import incomeRouter from "./routes/incomeRoute.js";
 
 const app = express();
 const port = process.env.PORT;
@@ -17,6 +18,7 @@ connectDB();
 
 // Routes
 app.use("/api/auth", userRouter);
+app.use("/api/income", incomeRouter);
 
 app.get("/", (req, res) => {
   res.send("✨ API's in its working era");
