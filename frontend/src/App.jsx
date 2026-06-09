@@ -28,8 +28,9 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route element={<Layout />} />
-        <Route path="/*" element={<Dashboard />} />
+        <Route element={<Layout />}>
+          <Route path="/*" element={<Dashboard />} />
+        </Route>
       </Routes>
     </>
   );
