@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { navbarStyles } from "../assets/dummyStyles";
 import img1 from "../assets/logo.png";
 import { useRef, useState } from "react";
+import { ChevronDown } from "lucide-react";
 
 const Navbar = ({ user: propUser, onLogout }) => {
   const navigate = useNavigate();
@@ -43,8 +44,36 @@ const Navbar = ({ user: propUser, onLogout }) => {
 
               <div className={navbarStyles.userTextContainer}>
                 <p className={navbarStyles.userName}>{user?.name || "User"}</p>
+                <p className={navbarStyles.userEmail}>
+                  {user?.email || "user@expensetracker.com"}
+                </p>
               </div>
+              <ChevronDown className={navbarStyles.chevronIcon(menuOpen)} />
             </button>
+
+            {/* Dropdown menu */}
+            {menuOpen && (
+              <div className={navbarStyles.dropdownMenu}>
+                <div className={navbarStyles.dropdownHeader}>
+                  <div className="flex items-center gap-3">
+                    <div className={navbarStyles.dropdownAvatar}>
+                      {user?.name?.[0]?.toUpperCase() || "U"}
+                    </div>
+
+                    <div>
+                      <div className={navbarStyles.dropdownName}>
+                        {user?.name || "User"}
+                      </div>
+                      <div className={navbarStyles.dropdownEmail}>
+                        {user?.email || "user@expensetracker.com"}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={navbarStyles.menuItemContainer}></div>
+              </div>
+            )}
           </div>
         )}
       </div>
