@@ -1,8 +1,13 @@
+import { useEffect, useRef, useState } from "react";
+
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { navbarStyles } from "../assets/dummyStyles";
+import { ChevronDown, LogOut, User } from "lucide-react";
+
 import img1 from "../assets/logo.png";
-import { useRef, useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { navbarStyles } from "../assets/dummyStyles";
+
+const BASE_URL = "http://localhost:7339/api";
 
 const Navbar = ({ user: propUser, onLogout }) => {
   const navigate = useNavigate();
@@ -17,6 +22,51 @@ const Navbar = ({ user: propUser, onLogout }) => {
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
   };
+
+  // To fetch the user data
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          return;
+        }
+
+        const response = await axios.get(`${BASE_URL}/user/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const userData = response.data.user || response.data;
+        setUser(userData);
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+      }
+    };
+    if (!propUser) {
+      fetchUserData();
+    }
+  }, [propUser]);
+
+  const handleLogout = () => {
+    setMenuOpen(false);
+    localStorage.removeItem("token");
+    onLogout?.();
+    navigate("/login");
+  };
+
+  // Closes the toggle menu if click outside the box
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <header className={navbarStyles.header}>
       <div className={navbarStyles.container}>
@@ -71,7 +121,28 @@ const Navbar = ({ user: propUser, onLogout }) => {
                   </div>
                 </div>
 
-                <div className={navbarStyles.menuItemContainer}></div>
+                <div className={navbarStyles.menuItemContainer}>
+                  <button
+                    onClick={() => {
+                      setMenuOpen(false);
+                      navigate("/profile");
+                    }}
+                    className={navbarStyles.menuItem}
+                  >
+                    <User className="w-4 h-4" />
+                    <span>My profile</span>
+                  </button>
+                </div>
+
+                <div className={navbarStyles.menuItemBorder}>
+                  <button
+                    onClick={handleLogout}
+                    className={navbarStyles.logoutButton}
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>Logout</span>
+                  </button>
+                </div>
               </div>
             )}
           </div>
