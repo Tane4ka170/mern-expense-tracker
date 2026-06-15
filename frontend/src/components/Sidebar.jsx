@@ -136,6 +136,49 @@ const Sidebar = ({ user, isCollapsed, setIsCollapsed }) => {
               </svg>
             </motion.div>
           </button>
+
+          <div
+            className={cn(
+              sidebarStyles.userProfileContainer.base,
+              isCollapsed
+                ? sidebarStyles.userProfileContainer.collapsed
+                : sidebarStyles.userProfileContainer.expanded,
+            )}
+          >
+            <div className="flex items-center">
+              <div className={sidebarStyles.userInitials.base}>{initial}</div>
+              {isCollapsed && (
+                <motion.div
+                  className="ml-3 overflow-hidden"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                >
+                  <h2 className="text-sm font-bold text-gray-800 truncate">
+                    {username}
+                  </h2>
+                  <p className="text-xs text-gray-500 truncate">{email}</p>
+                </motion.div>
+              )}
+            </div>
+          </div>
+
+          <div className="flex-1 overflow-y-auto py-4 custom-scrollbar">
+            <ul className={sidebarStyles.menuList.base}>
+              {MENU_ITEMS.map(renderMenuItem)}
+            </ul>
+          </div>
+
+          <div
+            className={cn(
+              sidebarStyles.footerContainer.base,
+              isCollapsed
+                ? sidebarStyles.footerContainer.collapsed
+                : sidebarStyles.footerContainer.expanded,
+            )}
+          >
+            <Link to={}></Link>
+          </div>
         </div>
       </motion.div>
     </>
