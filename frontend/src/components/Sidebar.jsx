@@ -1,8 +1,17 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { sidebarStyles, cn } from "../assets/dummyStyles";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { ArrowDown, ArrowUp, Home, User } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  HelpCircle,
+  Home,
+  LogOut,
+  Menu,
+  User,
+  X,
+} from "lucide-react";
 
 const MENU_ITEMS = [
   { text: "Dashboard", path: "/", icon: <Home size={20} /> },
@@ -177,10 +186,75 @@ const Sidebar = ({ user, isCollapsed, setIsCollapsed }) => {
                 : sidebarStyles.footerContainer.expanded,
             )}
           >
-            <Link to={}></Link>
+            <Link
+              to={"/"}
+              className={cn(
+                sidebarStyles.footerLink.base,
+                isCollapsed
+                  ? sidebarStyles.footerLink.collapsed
+                  : sidebarStyles.footerLink.expanded,
+              )}
+            >
+              <HelpCircle size={20} className="text-gray-500" />
+              {!isCollapsed && (
+                <span className="ml-3 text-sm font-medium text-gray-500">
+                  Support
+                </span>
+              )}
+            </Link>
+
+            <button
+              className={cn(
+                sidebarStyles.logoutButton.base,
+                isCollapsed && sidebarStyles.logoutButton.collapsed,
+              )}
+              onClick={handleLogout}
+            >
+              <LogOut size={20} className="text-gray-500" />
+              {!isCollapsed && <span>Logout</span>}
+            </button>
           </div>
         </div>
       </motion.div>
+
+      <motion.button
+        onClick={() => setMobileOpen((prev) => !prev)}
+        className={sidebarStyles.mobileMenuButton}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+      </motion.button>
+
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            className={sidebarStyles.mobileOverlay}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className={sidebarStyles.mobileBackdrop}
+              onClick={() => setMobileOpen(false)}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            />
+
+            <motion.div
+              ref={sidebarRef}
+              className={sidebarStyles.mobileSidebar.base}
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            >
+              <div className="relative h-full flex flex-col"></div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };
