@@ -115,7 +115,8 @@ const Sidebar = ({ user, isCollapsed, setIsCollapsed }) => {
       <motion.div
         ref={sidebarRef}
         className={sidebarStyles.sidebarContainer.base}
-        initial={{ x: -100, opacity: 1, width: isCollapsed ? 80 : 256 }}
+        initial={{ x: 0, opacity: 1 }}
+        animate={{ width: isCollapsed ? 80 : 256 }}
         transition={{ type: "spring", damping: 25 }}
       >
         <div className={sidebarStyles.sidebarInner.base}>
@@ -156,7 +157,7 @@ const Sidebar = ({ user, isCollapsed, setIsCollapsed }) => {
           >
             <div className="flex items-center">
               <div className={sidebarStyles.userInitials.base}>{initial}</div>
-              {isCollapsed && (
+              {!isCollapsed && (
                 <motion.div
                   className="ml-3 overflow-hidden"
                   initial={{ opacity: 0, x: -10 }}
