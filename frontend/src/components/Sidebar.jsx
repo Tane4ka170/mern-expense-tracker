@@ -312,6 +312,13 @@ const Sidebar = ({ user, isCollapsed, setIsCollapsed }) => {
                     <HelpCircle size={20} className="text-gray-500" />
                     <span>Support</span>
                   </Link>
+                  <button
+                    onClick={handleLogout}
+                    className={sidebarStyles.mobileLogoutButton}
+                  >
+                    <LogOut size={20} className="text-gray-500" />
+                    <span>Logout</span>
+                  </button>
                 </div>
               </div>
             </motion.div>
