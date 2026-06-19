@@ -13,6 +13,25 @@ const Layout = ({ onLogout, user }) => {
         isCollapsed={sidebarCollapsed}
         setIsCollapsed={setSidebarCollapsed}
       />
+      <div className={styles.layout.mainContainer(sidebarCollapsed)}>
+        <div className={styles.header.container}>
+          <div>
+            <h1 className={styles.header.title}>Dashboard</h1>
+            <p className={styles.header.subtitle}>Welcome back</p>
+          </div>
+        </div>
+
+        <div className={styles.statCards.grid}>
+          <div className={styles.statCards.card}>
+            <div className={styles.statCards.cardHeader}>
+              <div>
+                <p className={styles.statCards.cardTitle}>Total Balance</p>
+                <p className=""></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
