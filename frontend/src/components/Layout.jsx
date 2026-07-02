@@ -2,7 +2,18 @@ import { styles } from "../assets/dummyStyles";
 import Navbar from "./Navbar";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
-import { Utensils } from "lucide-react";
+import {
+  Activity,
+  ArrowUp,
+  Car,
+  CreditCard,
+  Gift,
+  Home,
+  PiggyBank,
+  ShoppingCart,
+  Utensils,
+  Zap,
+} from "lucide-react";
 
 const API = "http://localhost:7339/api";
 const CATEGORY_ICONS = {
