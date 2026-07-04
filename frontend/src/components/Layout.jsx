@@ -1,6 +1,6 @@
 import { styles } from "../assets/dummyStyles";
 import Navbar from "./Navbar";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Sidebar from "./Sidebar";
 import {
   Activity,
@@ -117,6 +117,8 @@ const Layout = ({ onLogout, user }) => {
     }
   };
 
+  // To add the transaction
+
   const addTransaction = async (transaction) => {
     try {
       const token = localStorage.getItem("token");
@@ -134,6 +136,8 @@ const Layout = ({ onLogout, user }) => {
       throw err;
     }
   };
+
+  // To edit the transaction
 
   const editTransaction = async (id, transaction) => {
     try {
@@ -154,6 +158,8 @@ const Layout = ({ onLogout, user }) => {
       throw err;
     }
   };
+
+  // To delete the transaction
 
   const deleteTransaction = async (id, type) => {
     try {
