@@ -7,6 +7,7 @@ import {
   ArrowUp,
   Car,
   CreditCard,
+  DollarSign,
   Gift,
   Home,
   PiggyBank,
@@ -182,11 +183,14 @@ const Layout = ({ onLogout, user }) => {
     fetchTransactions();
   }, []);
 
+  // filter with timeframe
+
   const filteredTransactions = useMemo(
     () => filterTransactions(transactions, timeFrame),
     [transactions, timeFrame],
   );
 
+  // Get stats data according to the time frame
   const stats = useMemo(() => {
     const now = new Date();
     const thirtyDaysAgo = new Date(now);
@@ -278,6 +282,7 @@ const Layout = ({ onLogout, user }) => {
   const getSavingsRating = (rate) =>
     rate > 30 ? "Excellent" : rate > 20 ? "Good" : "Needs improvement";
 
+  // For filter using category
   const topCategories = useMemo(
     () =>
       Object.entries(
@@ -318,9 +323,19 @@ const Layout = ({ onLogout, user }) => {
             <div className={styles.statCards.cardHeader}>
               <div>
                 <p className={styles.statCards.cardTitle}>Total Balance</p>
-                <p className={styles.statCards.cardValue}>${stats}</p>
+                <p className={styles.statCards.cardValue}>
+                  $
+                  {stats.allTimeSavings.toLocaleString("en-US", {
+                    maximumFractionDigits: 2,
+                  })}
+                </p>
+              </div>
+
+              <div className={styles.statCards.iconContainer("teal")}>
+                <DollarSign className={styles.statCards.icon("teal")} />
               </div>
             </div>
+            <p className={styles.statCards.cardFooter}></p>
           </div>
         </div>
       </div>
