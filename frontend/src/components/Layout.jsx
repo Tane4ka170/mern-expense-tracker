@@ -335,7 +335,37 @@ const Layout = ({ onLogout, user }) => {
                 <DollarSign className={styles.statCards.icon("teal")} />
               </div>
             </div>
-            <p className={styles.statCards.cardFooter}></p>
+            <p className={styles.statCards.cardFooter}>
+              <span className="text-teal-600 font-medium">
+                +${stats.last30DaysSavings.toLocaleString()}
+              </span>{" "}
+              this month
+            </p>
+          </div>
+
+          {/* For income */}
+          <div className={styles.statCards.card}>
+            <div className={styles.statCards.cardHeader}>
+              <div>
+                <p className={styles.statCards.cardTitle}>Total Balance</p>
+                <p className={styles.statCards.cardValue}>
+                  $
+                  {stats.allTimeSavings.toLocaleString("en-US", {
+                    maximumFractionDigits: 2,
+                  })}
+                </p>
+              </div>
+
+              <div className={styles.statCards.iconContainer("teal")}>
+                <DollarSign className={styles.statCards.icon("teal")} />
+              </div>
+            </div>
+            <p className={styles.statCards.cardFooter}>
+              <span className="text-teal-600 font-medium">
+                +${stats.last30DaysSavings.toLocaleString()}
+              </span>{" "}
+              this month
+            </p>
           </div>
         </div>
       </div>
