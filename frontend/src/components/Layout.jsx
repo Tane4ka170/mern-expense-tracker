@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Sidebar from "./Sidebar";
 import {
   Activity,
+  ArrowDown,
   ArrowUp,
   Car,
   CreditCard,
@@ -347,25 +348,80 @@ const Layout = ({ onLogout, user }) => {
           <div className={styles.statCards.card}>
             <div className={styles.statCards.cardHeader}>
               <div>
-                <p className={styles.statCards.cardTitle}>Total Balance</p>
+                <p className={styles.statCards.cardTitle}>Month</p>
                 <p className={styles.statCards.cardValue}>
                   $
-                  {stats.allTimeSavings.toLocaleString("en-US", {
+                  {stats.last30DaysIncome.toLocaleString("en-US", {
                     maximumFractionDigits: 2,
                   })}
                 </p>
               </div>
 
-              <div className={styles.statCards.iconContainer("teal")}>
-                <DollarSign className={styles.statCards.icon("teal")} />
+              <div className={styles.statCards.iconContainer("green")}>
+                <ArrowUp className={styles.statCards.icon("green")} />
               </div>
             </div>
             <p className={styles.statCards.cardFooter}>
-              <span className="text-teal-600 font-medium">
-                +${stats.last30DaysSavings.toLocaleString()}
-              </span>{" "}
-              this month
+              <span className="text-green-600 font-medium">+12.5%</span> from
+              last month
             </p>
+          </div>
+
+          {/* Expenses */}
+          <div className={styles.statCards.card}>
+            <div className={styles.statCards.cardHeader}>
+              <div>
+                <p className={styles.statCards.cardTitle}>Monthly Expense</p>
+                <p className={styles.statCards.cardValue}>
+                  $
+                  {stats.last30DaysExpenses.toLocaleString("en-US", {
+                    maximumFractionDigits: 2,
+                  })}
+                </p>
+              </div>
+
+              <div className={styles.statCards.iconContainer("orange")}>
+                <ArrowDown className={styles.statCards.icon("orange")} />
+              </div>
+            </div>
+            <p className={styles.statCards.cardFooter}>
+              <span
+                className={`${styles.colors.expenseChange(stats.expenseChange)} font-medium`}
+              >
+                {stats.expenseChange > 0 ? "+" : ""}
+                {stats.expenseChange}%
+              </span>{" "}
+              from last month
+            </p>
+          </div>
+
+          {/* Savings Rate */}
+          <div className={styles.statCards.card}>
+            <div className={styles.statCards.cardHeader}>
+              <div>
+                <p className={styles.statCards.cardTitle}>Savings Rate</p>
+                <p className={styles.statCards.cardValue}>
+                  {stats.savingsRate}%
+                </p>
+              </div>
+
+              <div className={styles.statCards.iconContainer("blue")}>
+                <PiggyBank className={styles.statCards.icon("blue")} />
+              </div>
+            </div>
+            <p className={styles.statCards.cardFooter}>
+              {getSavingsRating(stats.savingsRate)}
+            </p>
+          </div>
+        </div>
+
+        <div className={styles.grid.main}>
+          <div className={styles.grid.leftColumn}>
+            <div className={styles.cards.base}>
+              <div className={styles.cards.header}>
+                <h3></h3>
+              </div>
+            </div>
           </div>
         </div>
       </div>
