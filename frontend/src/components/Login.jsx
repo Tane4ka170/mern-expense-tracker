@@ -25,8 +25,11 @@ const Login = ({ onLogin, API_URL = "http://localhost:7339" }) => {
   const persistAuth = (profile, token) => {
     const storage = rememberMe ? localStorage : sessionStorage;
     try {
-      if (token) storage.setItem;
-    } catch (error) {}
+      if (token) storage.setItem("token", token);
+      if (profile) storage.setItem("user", JSON.stringify(profile));
+    } catch (error) {
+      console.error("Error persisting auth data:", error);
+    }
   };
   return (
     <div className={loginStyles.pageContainer}>
