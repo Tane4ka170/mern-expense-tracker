@@ -31,6 +31,35 @@ const Login = ({ onLogin, API_URL = "http://localhost:7339" }) => {
       console.error("Error persisting auth data:", error);
     }
   };
+
+  // To handle login
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+    try {
+      const res = await axios.post(
+        `${API_URL}/api/user/login`,
+        {
+          email,
+          password,
+        },
+        { headers: { "Content-Type": "application/json" } },
+      );
+      const data = res.data || {};
+      const token = data.token || null;
+
+      // To derive profile
+      let profile = data.user ?? null;
+      if (!profile) {
+        const copy = { ...data };
+        delete copy.token;
+        delete copy.user;
+
+        if(Object.keys())
+      }
+    } catch (error) {}
+  };
   return (
     <div className={loginStyles.pageContainer}>
       <div className={loginStyles.cardContainer}>
