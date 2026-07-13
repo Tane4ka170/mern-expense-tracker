@@ -1,4 +1,4 @@
-import { User } from "lucide-react";
+import { Lock, Mail, User } from "lucide-react";
 import { loginStyles } from "../assets/dummyStyles";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -56,9 +56,43 @@ const Login = ({ onLogin, API_URL = "http://localhost:7339" }) => {
         delete copy.token;
         delete copy.user;
 
-        if(Object.keys())
+        if (Object.keys(copy).length) {
+          profile = copy;
+        }
       }
-    } catch (error) {}
+      if (!profile && token) {
+        try {
+          profile = await fetchProfile(token);
+        } catch (fetchError) {
+          console.warn("Could not fetch profile:", fetchError);
+          profile = { email };
+        }
+      }
+      if (!profile) profile = { email };
+      persistAuth(profile, token);
+
+      if (typeof onLogin === "function") {
+        try {
+          onLogin(profile, rememberMe, token);
+        } catch (callErr) {
+          console.warn("onLogin callback error:", callErr);
+          navigate("/");
+        }
+      } else {
+        navigate("/");
+      }
+      setPassword("");
+    } catch (err) {
+      console.error("Login error:", err?.response || err);
+      const serverMsg =
+        err.response?.data?.message ||
+        (err.response?.data ? JSON.stringify(err.response.data) : null) ||
+        err.message ||
+        "Login failed";
+      setError(serverMsg);
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <div className={loginStyles.pageContainer}>
@@ -71,6 +105,71 @@ const Login = ({ onLogin, API_URL = "http://localhost:7339" }) => {
           <p className={loginStyles.headerSubtitle}>
             Access your ExpenseTracker account
           </p>
+        </div>
+
+        <div className={loginStyles.formContainer}>
+          {error && (
+            <div className={loginStyles.errorContainer}>
+              <div className={loginStyles.errorIcon}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              <span className={loginStyles.errorText}>{error}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit}>
+            <div className="mb-6">
+              <label htmlFor="email" className={loginStyles.label}>
+                Email Address
+              </label>
+              <div className={loginStyles.inputContainer}>
+                <div className={loginStyles.inputIcon}>
+                  <Mail className="w-5 h-5" />
+                </div>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className={loginStyles.input}
+                  placeholder="youremail@example.com"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="mb-6">
+              <label htmlFor="password" className={loginStyles.label}>
+                Password
+              </label>
+              <div className={loginStyles.inputContainer}>
+                <div className={loginStyles.inputIcon}>
+                  <Lock className="w-5 h-5" />
+                </div>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={loginStyles.input}
+                  placeholder="••••••••"
+                  required
+                />
+                <button type="button" onClick={()}></button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
