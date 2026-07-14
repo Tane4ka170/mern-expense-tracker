@@ -1,4 +1,4 @@
-import { Lock, Mail, User } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { loginStyles } from "../assets/dummyStyles";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -166,9 +166,21 @@ const Login = ({ onLogin, API_URL = "http://localhost:7339" }) => {
                   placeholder="••••••••"
                   required
                 />
-                <button type="button" onClick={()}></button>
+                <button
+                  type="button"
+                  onClick={() => setPassword(!showPassword)}
+                  className={loginStyles.passwordToggle}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
               </div>
             </div>
+
+            <div className={loginStyles.checkboxContainer}></div>
           </form>
         </div>
       </div>
