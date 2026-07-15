@@ -180,7 +180,52 @@ const Login = ({ onLogin, API_URL = "http://localhost:7339" }) => {
               </div>
             </div>
 
-            <div className={loginStyles.checkboxContainer}></div>
+            <div className={loginStyles.checkboxContainer}>
+              <input
+                type="checkbox"
+                id="remember"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className={loginStyles.checkbox}
+                required
+              />
+              <label htmlFor="remember" className={loginStyles.checkboxLabel}>
+                Remember Me{" "}
+              </label>
+            </div>
+            <button
+              type="submit"
+              disabled={isLoading}
+              className={`${loginStyles.button} ${isLoading ? loginStyles.buttonDisabled : ""}`}
+            >
+              {isLoading ? (
+                <>
+                  <svg
+                    className={loginStyles.spinner}
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
+                  </svg>
+                  Signing in...
+                </>
+              ) : (
+                "Sign in"
+              )}
+            </button>
           </form>
         </div>
       </div>
