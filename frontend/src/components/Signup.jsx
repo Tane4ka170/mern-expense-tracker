@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { signupStyles } from "../assets/dummyStyles";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft, User } from "lucide-react";
 
 const SignUp = ({ API_URL = "http://localhost:7339", onSignup }) => {
   const [name, setName] = useState("");
@@ -79,9 +80,33 @@ const SignUp = ({ API_URL = "http://localhost:7339", onSignup }) => {
       } else {
         setErrors({ api: err.message || "An unexpected error occurred" });
       }
+    } finally {
+      setIsLoading(false);
     }
   };
-  return <div>SignUp</div>;
+  return (
+    <div className={signupStyles.pageContainer}>
+      <div className={signupStyles.cardContainer}>
+        <div className={signupStyles.header}>
+          <button
+            onClick={() => navigate(-1)}
+            className={signupStyles.backButton}
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <div className={signupStyles.avatar}>
+            <User className="w-10 h-10 text-white" />
+          </div>
+          <h1 className={signupStyles.headerTitle}>Sign Up</h1>
+          <p className={signupStyles.headerSubtitle}>
+            Take control of your money with ExpenseTracker
+          </p>
+        </div>
+
+        <div className=""></div>
+      </div>
+    </div>
+  );
 };
 
 export default SignUp;
