@@ -1,5 +1,5 @@
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
-import { loginStyles } from "../assets/dummyStyles";
+import { loginStyles, signupStyles } from "../assets/dummyStyles";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
