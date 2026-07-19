@@ -2,6 +2,7 @@ import { useState } from "react";
 import { signupStyles } from "../assets/dummyStyles";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, User } from "lucide-react";
+import axios from "axios";
 
 const SignUp = ({ API_URL = "http://localhost:7339", onSignup }) => {
   const [name, setName] = useState("");
@@ -71,6 +72,13 @@ const SignUp = ({ API_URL = "http://localhost:7339", onSignup }) => {
         },
         { headers: { "Content-Type": "application/json" } },
       );
+      const token = res.data?.token;
+      const user = res.data?.user || res.data;
+      if (onSignup) {
+        onSignup(user, token, rememberMe);
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       console.error("Signup error:", err?.response || err);
       if (err.response?.data?.errors) {
@@ -103,7 +111,31 @@ const SignUp = ({ API_URL = "http://localhost:7339", onSignup }) => {
           </p>
         </div>
 
-        <div className=""></div>
+        <div className={signupStyles.formContainer}>
+          {errors.api && <p className={signupStyles.apiError}></p>}
+          <form onSubmit={handleSubmit} noValidate>
+            <div className="mb-6">
+              <label htmlFor="name" className={signupStyles.label}>
+                Full Name
+              </label>
+              <div className={signupStyles.inputContainer}>
+                <div className={signupStyles.inputIcon}>
+                  <User className="w-5 h-5" />
+                </div>
+                <input
+                  type="text"
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className={`${signupStyles.input} ${errors.name ? "border-red-400" : "border-gray-400"}`}
+                  placeholder="e.g. John Doe"
+                />
+              </div>
+
+              {errors.name && <p className=""></p>}
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
