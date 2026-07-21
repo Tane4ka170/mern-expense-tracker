@@ -162,6 +162,29 @@ const SignUp = ({ API_URL = "http://localhost:7339", onSignup }) => {
                 <p className={signupStyles.fieldError}>{errors.name}</p>
               )}
             </div>
+
+            <div className="mb-6">
+              <label htmlFor="name" className={signupStyles.label}>
+                Email Address
+              </label>
+              <div className={signupStyles.inputContainer}>
+                <div className={signupStyles.inputIcon}>
+                  <Mail className="w-5 h-5" />
+                </div>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className={`${signupStyles.input} ${errors.name ? "border-red-400" : "border-gray-400"}`}
+                  placeholder="youremail@example.com"
+                />
+              </div>
+
+              {errors.name && (
+                <p className={signupStyles.fieldError}>{errors.name}</p>
+              )}
+            </div>
           </form>
         </div>
       </div>
