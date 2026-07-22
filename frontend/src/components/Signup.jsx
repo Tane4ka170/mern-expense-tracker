@@ -181,7 +181,7 @@ const SignUp = ({ API_URL = "http://localhost:7339", onSignup }) => {
                 />
               </div>
 
-              {errors.name && (
+              {errors.email && (
                 <p className={signupStyles.fieldError}>{errors.name}</p>
               )}
             </div>
