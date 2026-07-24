@@ -202,6 +202,10 @@ const SignUp = ({ API_URL = "http://localhost:7339", onSignup }) => {
                   className={`${signupStyles.passwordInput} ${errors.password ? "border-red-400" : "border-gray-400"}`}
                   placeholder="••••••••"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                ></button>
               </div>
 
               {errors.password && (
