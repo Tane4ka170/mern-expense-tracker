@@ -205,12 +205,30 @@ const SignUp = ({ API_URL = "http://localhost:7339", onSignup }) => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                ></button>
+                  className={signupStyles.passwordToggle}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
               </div>
 
               {errors.password && (
                 <p className={signupStyles.fieldError}>{errors.password}</p>
               )}
+            </div>
+
+            <div className={signupStyles.checkboxContainer}>
+              <input
+                type="checkbox"
+                id="remember"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className={`${signupStyles.input} ${errors.email ? "border-red-400" : "border-gray-400"}`}
+                placeholder="youremail@example.com"
+              />
             </div>
           </form>
         </div>
