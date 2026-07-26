@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { signupStyles } from "../assets/dummyStyles";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, User } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Mail, User } from "lucide-react";
 import axios from "axios";
 
 const SignUp = ({ API_URL = "http://localhost:7339", onSignup }) => {
@@ -226,10 +226,14 @@ const SignUp = ({ API_URL = "http://localhost:7339", onSignup }) => {
                 id="remember"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className={`${signupStyles.input} ${errors.email ? "border-red-400" : "border-gray-400"}`}
+                className={signupStyles.checkbox}
                 placeholder="youremail@example.com"
               />
+              <label htmlFor="remember" className={signupStyles.checkboxLabel}>
+                Remember Me
+              </label>
             </div>
+            <button type="submit" className={}></button>
           </form>
         </div>
       </div>
