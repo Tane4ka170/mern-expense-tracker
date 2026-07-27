@@ -233,7 +233,10 @@ const SignUp = ({ API_URL = "http://localhost:7339", onSignup }) => {
                 Remember Me
               </label>
             </div>
-            <button type="submit" className={}></button>
+            <button
+              type="submit"
+              className={`${signupStyles.button} ${isLoading ?}`}
+            ></button>
           </form>
         </div>
       </div>
