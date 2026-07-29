@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { signupStyles } from "../assets/dummyStyles";
-import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Eye, EyeOff, Mail, User } from "lucide-react";
+
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft, Eye, EyeOff, Mail, User } from "lucide-react";
+
+import { signupStyles } from "../assets/dummyStyles";
 
 const SignUp = ({ API_URL = "http://localhost:7339", onSignup }) => {
   const [name, setName] = useState("");
@@ -268,7 +270,14 @@ const SignUp = ({ API_URL = "http://localhost:7339", onSignup }) => {
             </button>
           </form>
 
-          <div className=""></div>
+          <div className={signupStyles.signInContainer}>
+            <p className={signupStyles.signInText}>
+              Already have an account?{" "}
+              <Link to={"/lo"} className={signupStyles.signInLink}>
+                Sign In
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>

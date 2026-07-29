@@ -1,9 +1,41 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
+
+const API_URL = "http://localhost:7339";
+
+// To get transactions from localstorage
+const getTransactionsFromStorage = () => {
+  const saved = localStorage.getitem("transactions");
+  return saved ? JSON.parse(saved) : [];
+};
+
+// To protect the routes
+const ProtectedRoute = ({ user, children }) => {
+  const localToken = localStorage.getItem("token");
+  const sessionToken = sessionStorage.getItem("token");
+  const hasToken = localToken || sessionToken;
+
+  if (!user || !hasToken) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+};
+
+// To scroll to top when page gets reload or new page is visited
+const ScrollToTop = () => {
+  const location = useLocation();
+  useEffect(() => {});
+};
 
 const App = () => {
   const [user, setUser] = useState(null);
