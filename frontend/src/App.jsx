@@ -34,7 +34,9 @@ const ProtectedRoute = ({ user, children }) => {
 // To scroll to top when page gets reload or new page is visited
 const ScrollToTop = () => {
   const location = useLocation();
-  useEffect(() => {});
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [location.pathname]);
 };
 
 const App = () => {
