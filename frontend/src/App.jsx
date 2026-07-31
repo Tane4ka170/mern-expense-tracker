@@ -37,11 +37,14 @@ const ScrollToTop = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [location.pathname]);
+  return null;
 };
 
 const App = () => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [transactions, setTransactions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   const persistAuth = (userObj, tokenStr, remember = false) => {
@@ -76,6 +79,23 @@ const App = () => {
     setUser(null);
     setToken(null);
   };
+
+  // To update user data both in state and storage
+  const updateUserData = (updatedUser) => {
+    setUser(updatedUser);
+
+    const localToken = localStorage.getItem("token");
+    const sessionToken = sessionStorage.getItem("token");
+
+    if (localToken) {
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+    } else if (sessionToken) {
+      sessionStorage.setItem("user", JSON.stringify(updatedUser));
+    }
+  };
+
+  // Try to load user with token when mounted
+  useEffect(() => {});
 
   const handleLogout = () => {
     clearAuth();
