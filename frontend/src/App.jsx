@@ -95,7 +95,14 @@ const App = () => {
   };
 
   // Try to load user with token when mounted
-  useEffect(() => {});
+  useEffect(() => {
+    async () => {
+      try {
+        const localUserRaw = localStorage.getItem("user");
+        const sessionUserRaw = sessionStorage.getItem("user");
+      } catch (error) {}
+    };
+  });
 
   const handleLogout = () => {
     clearAuth();
