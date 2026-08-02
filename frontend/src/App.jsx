@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import { useEffect, useState } from "react";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
+import axios from "axios";
 
 const API_URL = "http://localhost:7339";
 
@@ -100,7 +101,45 @@ const App = () => {
       try {
         const localUserRaw = localStorage.getItem("user");
         const sessionUserRaw = sessionStorage.getItem("user");
-      } catch (error) {}
+        const localToken = localStorage.getItem("token");
+        const sessionToken = sessionStorage.getItem("token");
+
+        const storedUser = localUserRaw
+          ? JSON.parse(localUserRaw)
+          : sessionUserRaw
+            ? JSON.parse(sessionUserRaw)
+            : null;
+
+        const storedToken = localToken || sessionToken;
+        const tokenFromLocal = !!localToken;
+
+        if (storedUser) {
+          setUser(storedUser);
+          setToken(storedToken);
+          setIsLoading(false);
+          return;
+        }
+
+        if (storedToken) {
+          try {
+            const res = await axios.get(`${API_URL}/api/user/me`, {
+              headers: { Authorization: `Bearer${storedToken}` },
+            });
+            const profile = res.data;
+            persistAuth(profile, storedToken, tokenFromLocal);
+          } catch (fetchErr) {
+            console.warn(
+              "Stored token invalid or expired. Profile fetch failed:",
+              fetchErr,
+            );
+            clearAuth();
+          }
+        }
+      } catch (err) {
+        console.error("Authentication setup failed:", err);
+      } finally {
+        setIsLoading(false);
+      }
     };
   });
 
