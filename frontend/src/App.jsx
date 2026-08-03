@@ -139,9 +139,22 @@ const App = () => {
         console.error("Authentication setup failed:", err);
       } finally {
         setIsLoading(false);
+        try {
+          setTransactions(getTransactionsFromStorage());
+        } catch (txErr) {
+          console.error("Failed to load transactions from storage:", txErr);
+        }
       }
     };
-  });
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("trasactions", JSON.stringify(transactions));
+    } catch (err) {
+      console.error("Failed to save transactions to storage:", err);
+    }
+  }, [transactions]);
 
   const handleLogout = () => {
     clearAuth();
@@ -157,6 +170,30 @@ const App = () => {
     persistAuth(userData, remember, tokenFromApi);
     navigate("/");
   };
+
+  // transaction helpers
+  const addTransaction = (newTransaction) =>
+    setTransactions((p) => [newTransaction, ...p]);
+  const editTransaction = (id, updatedTransaction) =>
+    setTransactions((p) =>
+      p.map((t) => (t.id === id ? { ...updatedTransaction, id } : t)),
+    );
+  const deleteTransaction = (id) =>
+    setTransactions((p) => p.filter((t) => t.id !== id));
+  const refreshTransactions = () =>
+    setTransactions(getTransactionsFromStorage());
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="flex flex-col items-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <Routes>
