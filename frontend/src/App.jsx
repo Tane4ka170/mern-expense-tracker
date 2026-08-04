@@ -199,8 +199,22 @@ const App = () => {
       <Routes>
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/signup" element={<SignUp onSignup={handleSignup} />} />
-        <Route element={<Layout onLogout={handleLogout} />}>
-          <Route path="/*" element={<Dashboard />} />
+        <Route
+          element={
+            <ProtectedRoute>
+              <Layout onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        >
+          <Route
+            path="/*"
+            element={<Dashboard />}
+            transactions={transactions}
+            addTransaction={addTransaction}
+            editTransaction={editTransaction}
+            deleteTransaction={deleteTransaction}
+            refreshTransactions={refreshTransactions}
+          />
         </Route>
       </Routes>
     </>
