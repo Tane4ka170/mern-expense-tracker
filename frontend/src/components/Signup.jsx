@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Eye, EyeOff, Mail, User } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, LockIcon, Mail, User } from "lucide-react";
 
 import { signupStyles } from "../assets/dummyStyles";
 
@@ -194,7 +194,7 @@ const SignUp = ({ API_URL = "http://localhost:7339", onSignup }) => {
               </label>
               <div className={signupStyles.inputContainer}>
                 <div className={signupStyles.inputIcon}>
-                  <Lock className="w-5 h-5" />
+                  <LockIcon className="w-5 h-5" />
                 </div>
                 <input
                   type={showPassword ? "text" : "password"}

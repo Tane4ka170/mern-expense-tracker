@@ -1,3 +1,4 @@
+import { X } from "lucide-react";
 import { modalStyles } from "../assets/dummyStyles";
 
 const AddTransactionModal = ({
@@ -35,7 +36,28 @@ const AddTransactionModal = ({
 
   const colorClass = modalStyles.colorClasses[color];
 
-  return <div>Add</div>;
+  return (
+    <div className={modalStyles.overlay}>
+      <div className={modalStyles.modalContainer}>
+        <div className={modalStyles.modalHeader}>
+          <h3 className={modalStyles.modalTitle}>{title}</h3>
+          <button
+            onClick={() => setShowModal(false)}
+            className={modalStyles.closeButton}
+          >
+            <X size={24} />
+          </button>
+        </div>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleAddTransaction();
+          }}
+        ></form>
+      </div>
+    </div>
+  );
 };
 
-export default Add;
+export default AddTransactionModal;

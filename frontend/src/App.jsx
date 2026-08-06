@@ -16,7 +16,7 @@ const API_URL = "http://localhost:7339";
 
 // To get transactions from localstorage
 const getTransactionsFromStorage = () => {
-  const saved = localStorage.getitem("transactions");
+  const saved = localStorage.getItem("transactions");
   return saved ? JSON.parse(saved) : [];
 };
 
@@ -97,7 +97,7 @@ const App = () => {
 
   // Try to load user with token when mounted
   useEffect(() => {
-    async () => {
+    const loadAuth = async () => {
       try {
         const localUserRaw = localStorage.getItem("user");
         const sessionUserRaw = sessionStorage.getItem("user");
@@ -123,8 +123,9 @@ const App = () => {
         if (storedToken) {
           try {
             const res = await axios.get(`${API_URL}/api/user/me`, {
-              headers: { Authorization: `Bearer${storedToken}` },
+              headers: { Authorization: `Bearer ${storedToken}` },
             });
+
             const profile = res.data;
             persistAuth(profile, storedToken, tokenFromLocal);
           } catch (fetchErr) {
@@ -139,6 +140,7 @@ const App = () => {
         console.error("Authentication setup failed:", err);
       } finally {
         setIsLoading(false);
+
         try {
           setTransactions(getTransactionsFromStorage());
         } catch (txErr) {
@@ -146,11 +148,13 @@ const App = () => {
         }
       }
     };
+
+    loadAuth();
   }, []);
 
   useEffect(() => {
     try {
-      localStorage.setItem("trasactions", JSON.stringify(transactions));
+      localStorage.setItem("transactions", JSON.stringify(transactions));
     } catch (err) {
       console.error("Failed to save transactions to storage:", err);
     }
@@ -162,12 +166,12 @@ const App = () => {
   };
 
   const handleLogin = (userData, remember = false, tokenFromApi = null) => {
-    persistAuth(userData, remember, tokenFromApi);
+    persistAuth(userData, tokenFromApi, remember);
     navigate("/");
   };
 
   const handleSignup = (userData, remember = false, tokenFromApi = null) => {
-    persistAuth(userData, remember, tokenFromApi);
+    persistAuth(userData, tokenFromApi, remember);
     navigate("/");
   };
 
@@ -201,19 +205,22 @@ const App = () => {
         <Route path="/signup" element={<SignUp onSignup={handleSignup} />} />
         <Route
           element={
-            <ProtectedRoute>
+            <ProtectedRoute user={user}>
               <Layout onLogout={handleLogout} />
             </ProtectedRoute>
           }
         >
           <Route
             path="/*"
-            element={<Dashboard />}
-            transactions={transactions}
-            addTransaction={addTransaction}
-            editTransaction={editTransaction}
-            deleteTransaction={deleteTransaction}
-            refreshTransactions={refreshTransactions}
+            element={
+              <Dashboard
+                transactions={transactions}
+                addTransaction={addTransaction}
+                editTransaction={editTransaction}
+                deleteTransaction={deleteTransaction}
+                refreshTransactions={refreshTransactions}
+              />
+            }
           />
         </Route>
       </Routes>
