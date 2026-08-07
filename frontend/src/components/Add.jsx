@@ -54,7 +54,48 @@ const AddTransactionModal = ({
             e.preventDefault();
             handleAddTransaction();
           }}
-        ></form>
+        >
+          <div className={modalStyles.form}>
+            <div>
+              <label className={modalStyles.label}>Description</label>
+              <input
+                type="text"
+                value={newTransaction.description}
+                onChange={(e) => {
+                  setNewTransaction((prev) => ({
+                    ...prev,
+                    description: e.target.value,
+                  }));
+                }}
+                className={modalStyles.input(colorClass.ring)}
+                placeholder={
+                  type === "Both"
+                    ? "Salary, Funds, etc."
+                    : "Groceries, Rent, etc."
+                }
+                required
+              />
+            </div>
+
+            <div>
+              <label className={modalStyles.label}>Amount</label>
+              <input
+                type="number"
+                value={newTransaction.amount}
+                onChange={(e) => {
+                  setNewTransaction((prev) => ({
+                    ...prev,
+                    description: e.target.value,
+                  }));
+                }}
+                className={modalStyles.input(colorClass.ring)}
+                placeholder="o.00"
+                required
+              />
+            </div>
+            {type === "Both"}
+          </div>
+        </form>
       </div>
     </div>
   );
