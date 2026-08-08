@@ -93,7 +93,48 @@ const AddTransactionModal = ({
                 required
               />
             </div>
-            {type === "Both"}
+            {type === "both" && (
+              <div>
+                <label className={modalStyles.label}>Type</label>
+                <div className={modalStyles.typeButtonContainer}>
+                  <button
+                    type="button"
+                    className={modalStyles.typeButton(
+                      newTransaction.type === "income",
+                      modalStyles.colorClasses.teal.typeButtonSelected,
+                    )}
+                    onClick={() =>
+                      setNewTransaction((prev) => ({ ...prev, type: "income" }))
+                    }
+                  >
+                    Income
+                  </button>
+                  <button
+                    type="button"
+                    className={modalStyles.typeButton(
+                      newTransaction.type === "expense",
+                      modalStyles.colorClasses.orange.typeButtonSelected,
+                    )}
+                    onClick={() =>
+                      setNewTransaction((prev) => ({
+                        ...prev,
+                        type: "expense",
+                      }))
+                    }
+                  >
+                    Expense
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div>
+              <label className={modalStyles.label}>Category</label>
+              <select
+                value={newTransaction.category}
+                onChange={(e) => setNewTransaction({ ...prev })}
+              ></select>
+            </div>
           </div>
         </form>
       </div>
