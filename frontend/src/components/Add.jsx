@@ -132,8 +132,21 @@ const AddTransactionModal = ({
               <label className={modalStyles.label}>Category</label>
               <select
                 value={newTransaction.category}
-                onChange={(e) => setNewTransaction({ ...prev })}
-              ></select>
+                onChange={(e) =>
+                  setNewTransaction({ ...prev, category: e.target.value })
+                }
+                className={modalStyles.input(colorClass.ring)}
+              >
+                {categories.map((cat) => (
+                  <option value={cat} key={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor=""></label>
             </div>
           </div>
         </form>
