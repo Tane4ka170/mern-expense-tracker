@@ -146,8 +146,26 @@ const AddTransactionModal = ({
             </div>
 
             <div>
-              <label htmlFor=""></label>
+              <label className={modalStyles.label}>Date</label>
+              <input
+                type="date"
+                value={newTransaction.date}
+                onChange={(e) => {
+                  newTransaction((prev) => ({ ...prev, date: e.target.value }));
+                }}
+                className={modalStyles.input(colorClass.ring)}
+                min={minDate}
+                max={currentDate}
+                required
+              />
             </div>
+
+            <button
+              type="submit"
+              className={modalStyles.submitButton(colorClass.button)}
+            >
+              {buttonText}
+            </button>
           </div>
         </form>
       </div>
