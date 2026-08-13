@@ -11,6 +11,7 @@ import {
 } from "../assets/color";
 import { useOutletContext } from "react-router";
 import { useEffect, useMemo, useState } from "react";
+import axios from "axios";
 
 const API_BASE = "http://localhost:7339/api";
 
@@ -243,7 +244,115 @@ const Dashboard = () => {
     : expenseListForDisplay.slice(0, 3);
 
   // Fetch server-side data
-  const fetchDashboardOverview = async();
+  const fetchDashboardOverview = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`${API_BASE}/dashboard`, {
+        headers: getAuthHeader(),
+      });
+      if (res?.data?.success) {
+        const data = res.data.data;
+        const recent = (data.recentTransactions || []).map((item) => {
+          const typeFromServer =
+            item.type || (item.category ? "expense" : "income");
+          const amountNum = Number(item.amount) || 0;
+
+          const isoDate = item.date
+            ? new Date(item.date).toISOString()
+            : item.createdAt
+              ? new Date(item.createdAt).toISOString()
+              : new Date().toISOString();
+
+          return {
+            id: item._id || item.id || Date.now() + Math.random(),
+            date: isoDate,
+            description:
+              item.description ||
+              item.note ||
+              item.title ||
+              (typeFromServer === "income"
+                ? item.source || "Income"
+                : item.category || "Expense"),
+            amount: amountNum,
+            type: typeFromServer,
+            category:
+              item.category ||
+              (typeFromServer === "income" ? "Salary" : "Other"),
+            raw: item,
+          };
+        });
+
+        setOverviewMeta((prev) => ({
+          ...prev,
+          monthlyIncome: Number(data.monthlyIncome || 0),
+          monthlyExpense: Number(data.monthlyExpense || 0),
+          savings:
+            typeof data.savings !== "undefined"
+              ? Number(data.savings)
+              : Number(data.monthlyIncome || 0) -
+                Number(data.monthlyExpense || 0),
+          savingsRate:
+            typeof data.savingsRate !== "undefined" ? data.savingsRate : null,
+          spendByCategory: data.spendByCategory || {},
+          expenseDistribution: data.expenseDistribution || [],
+          recentTransactions: recent,
+        }));
+
+        if (timeFrame === "monthly") {
+          const monthlyIncome = Number(data.monthlyIncome || 0);
+          const monthlyExpense = Number(data.monthlyExpense || 0);
+          const savings =
+            typeof data.savings !== "undefined"
+              ? Number(data.savings)
+              : monthlyIncome - monthlyExpense;
+
+          const maxValues = {
+            income: Math.max(monthlyIncome, 5000),
+            expenses: Math.max(monthlyExpense, 3000),
+            savings: Math.max(Math.abs(savings), 2000),
+          };
+
+          setGaugeData([
+            { name: "Income", value: monthlyIncome, max: maxValues.income },
+            { name: "Spent", value: monthlyExpense, max: maxValues.expenses },
+            { name: "Savings", value: savings, max: maxValues.savings },
+          ]);
+        }
+      } else {
+        console.warn("Dashboard endpoint returned success:false", res?.data);
+      }
+    } catch (err) {
+      console.error(
+        "Failed to fetch dashboard overview:",
+        err?.response || err.message || err,
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDashboardOverview();
+  }, []);
+
+  // Add / edit / delete
+  const handleTransaction = async () => {
+    if (!newTransaction.description || !newTransaction.amount) return;
+
+    const payload = {
+      date: toIsoWithClientTime(newTransaction.date),
+      description: newTransaction.description,
+      amount: parseFloat(newTransaction.amount),
+      category: newTransaction.category,
+    };
+
+    try {
+      setLoading(true);
+      if (newTransaction.type === "income") {
+        await axios;
+      }
+    } catch (error) {}
+  };
   return <div>Dashboard</div>;
 };
 
