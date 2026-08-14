@@ -349,7 +349,11 @@ const Dashboard = () => {
     try {
       setLoading(true);
       if (newTransaction.type === "income") {
-        await axios;
+        await axios.post(`${API_BASE}/income/add`, payload, {
+          headers: getAuthHeader(),
+        });
+      } else {
+        await axios.post(`${API_BASE}/expense/add`);
       }
     } catch (error) {}
   };
