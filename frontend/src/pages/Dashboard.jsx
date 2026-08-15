@@ -381,7 +381,14 @@ const Dashboard = () => {
     <div className={dashboardStyles.container}>
       {/* Header */}
       <div className={dashboardStyles.headerContainer}>
-        <div className={dashboardStyles.headerContent}></div>
+        <div className={dashboardStyles.headerContent}>
+          <div>
+            <h1 className={dashboardStyles.headerTitle}>Finance Dashboard</h1>
+            <p className={dashboardStyles.headerSubtitle}>
+              Take full control of your cash flow
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
