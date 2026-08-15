@@ -353,11 +353,38 @@ const Dashboard = () => {
           headers: getAuthHeader(),
         });
       } else {
-        await axios.post(`${API_BASE}/expense/add`);
+        await axios.post(`${API_BASE}/expense/add`, payload, {
+          headers: getAuthHeader(),
+        });
       }
-    } catch (error) {}
+      await refreshTransactions();
+      await fetchDashboardOverview();
+
+      setNewTransaction({
+        date: new Date().toISOString().split("T")[0],
+        description: "",
+        amount: "",
+        type: "expense",
+        category: "Food",
+      });
+      setShowModal(false);
+    } catch (error) {
+      console.error(
+        "Failed to add transaction:",
+        error?.response || error.message || error,
+      );
+    } finally {
+      setLoading(false);
+    }
   };
-  return <div>Dashboard</div>;
+  return (
+    <div className={dashboardStyles.container}>
+      {/* Header */}
+      <div className={dashboardStyles.headerContainer}>
+        <div className={dashboardStyles.headerContent}></div>
+      </div>
+    </div>
+  );
 };
 
 export default Dashboard;
