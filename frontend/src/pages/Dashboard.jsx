@@ -12,6 +12,7 @@ import {
 import { useOutletContext } from "react-router";
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
+import { Plus } from "lucide-react";
 
 const API_BASE = "http://localhost:7339/api";
 
@@ -387,7 +388,13 @@ const Dashboard = () => {
             <p className={dashboardStyles.headerSubtitle}>
               Take full control of your cash flow
             </p>
-          </div>
+          </div>{" "}
+          <button
+            onClick={() => setShowModal(true)}
+            className={dashboardStyles.addButton}
+          >
+            <Plus size={20} />
+          </button>
         </div>
       </div>
     </div>
