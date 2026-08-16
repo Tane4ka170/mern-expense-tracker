@@ -394,6 +394,7 @@ const Dashboard = () => {
             className={dashboardStyles.addButton}
           >
             <Plus size={20} />
+            Add Transaction
           </button>
         </div>
       </div>
