@@ -397,6 +397,20 @@ const Dashboard = () => {
             Add Transaction
           </button>
         </div>
+
+        <div className={dashboardStyles.timeFrameContainer}>
+          <div className={dashboardStyles.timeFrameWrapper}>
+            {["daily", "weekly", "monthly"].map((frame) => (
+              <button
+                key={frame}
+                onClick={() => setTimeFrame(frame)}
+                className={dashboardStyles.timeFrameButton(timeFrame === frame)}
+              >
+                {frame.charAt(0).toUpperCase() + frame.slice(1)}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
