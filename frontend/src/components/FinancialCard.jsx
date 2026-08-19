@@ -12,7 +12,10 @@ const FinancialCard = ({
     >
       <div className="text-sm font-medium text-gray-400 flex items-center gap-2">
         {icon}
+        {label}
       </div>
+      <p className="text-2xl font-bold text-gray-700">{value}</p>
+      {addictionalContent}
     </div>
   );
 };

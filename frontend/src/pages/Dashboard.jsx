@@ -12,12 +12,20 @@ import {
 import { useOutletContext } from "react-router";
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import { Plus } from "lucide-react";
+import {
+  ArrowDown,
+  PiggyBank,
+  Plus,
+  TrendingDown,
+  TrendingUp,
+  Wallet,
+} from "lucide-react";
 import {
   calculateData,
   getPreviousTimeFrameRange,
   getTimeFrameRange,
 } from "../components/Helpers";
+import FinancialCard from "../components/FinancialCard";
 
 const API_BASE = "http://localhost:7339/api";
 
@@ -416,6 +424,82 @@ const Dashboard = () => {
             ))}
           </div>
         </div>
+      </div>
+
+      <div className={dashboardStyles.summaryGrid}>
+        <FinancialCard
+          icon={
+            <div className={dashboardStyles.walletIconContainer}>
+              <Wallet className="w-5 h-5 text-teal-700" />
+            </div>
+          }
+          label={"Total Balance"}
+          value={`${Math.round(displayIncome - displayExpenses).toLocaleString()}`}
+          addictionalContent={
+            <div className="flex items-center gap-2 mt-2 text-sm">
+              <span className={dashboardStyles.balanceBadge}>
+                +${Math.round(displayIncome).toLocaleString()}
+              </span>
+              <span className={dashboardStyles.expenseBadge}>
+                -${Math.round(displayExpenses).toLocaleString()}
+              </span>
+            </div>
+          }
+        />
+
+        <FinancialCard
+          icon={
+            <div className={dashboardStyles.walletIconContainer}>
+              <ArrowDown className="w-5 h-5 text-orange-700" />
+            </div>
+          }
+          label={`${timeFrameRange.label} Expenses`}
+          value={`${Math.round(displayExpenses).toLocaleString()}`}
+          addictionalContent={
+            <div
+              className={`mt-2 text-xs flex items-center gap-1 ${expenseChange >= 0 ? trendStyles.positive : trendStyles.negative}`}
+            >
+              {expenseChange >= 0 ? (
+                <TrendingUp className="w-4 h-4" />
+              ) : (
+                <TrendingDown className="w-4 h-4" />
+              )}
+
+              <span>
+                {Math.abs(expenseChange)}%
+                {expenseChange >= 0 ? "increase" : "decrease"} from{" "}
+                {prevTimeFrameRange.label}
+              </span>
+            </div>
+          }
+        />
+
+        <FinancialCard
+          icon={
+            <div className={dashboardStyles.piggyBankIconContainer}>
+              <PiggyBank className="w-5 h-5 text-cyan-700" />
+            </div>
+          }
+          label={`${timeFrameRange.label} Savings`}
+          value={`${Math.round(displayExpenses).toLocaleString()}`}
+          addictionalContent={
+            <div
+              className={`mt-2 text-xs flex items-center gap-1 ${expenseChange >= 0 ? trendStyles.positive : trendStyles.negative}`}
+            >
+              {expenseChange >= 0 ? (
+                <TrendingUp className="w-4 h-4" />
+              ) : (
+                <TrendingDown className="w-4 h-4" />
+              )}
+
+              <span>
+                {Math.abs(expenseChange)}%
+                {expenseChange >= 0 ? "increase" : "decrease"} from{" "}
+                {prevTimeFrameRange.label}
+              </span>
+            </div>
+          }
+        />
       </div>
     </div>
   );
