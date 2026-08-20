@@ -13,6 +13,11 @@ import { useOutletContext } from "react-router";
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { Plus } from "lucide-react";
+import {
+  calculateData,
+  getPreviousTimeFrameRange,
+  getTimeFrameRange,
+} from "../components/Helpers";
 
 const API_BASE = "http://localhost:7339/api";
 
