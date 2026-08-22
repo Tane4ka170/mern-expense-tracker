@@ -1,17 +1,15 @@
-import {
-  dashboardStyles,
-  trendStyles,
-  chartStyles,
-} from "../assets/dummyStyles";
-import {
-  GAUGE_COLORS,
-  COLORS,
-  INCOME_CATEGORY_ICONS,
-  EXPENSE_CATEGORY_ICONS,
-} from "../assets/color";
-import { useOutletContext } from "react-router";
 import { useEffect, useMemo, useState } from "react";
+
 import axios from "axios";
+import { useOutletContext } from "react-router";
+import {
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
 import {
   ArrowDown,
   BarChart2,
@@ -21,27 +19,32 @@ import {
   PieChartIcon,
   PiggyBank,
   Plus,
+  TrendingUp as ProfitIcon,
+  ShoppingCart,
   TrendingDown,
   TrendingUp,
   Wallet,
-  TrendingUp as ProfitIcon,
-  ShoppingCart,
 } from "lucide-react";
+
+import GaugeCard from "../components/GaugeCard";
+import AddTransactionModal from "../components/Add";
+import FinancialCard from "../components/FinancialCard";
+import {
+  chartStyles,
+  dashboardStyles,
+  trendStyles,
+} from "../assets/dummyStyles";
 import {
   calculateData,
   getPreviousTimeFrameRange,
   getTimeFrameRange,
 } from "../components/Helpers";
-import FinancialCard from "../components/FinancialCard";
-import GaugeCard from "../components/GaugeCard";
 import {
-  Cell,
-  Legend,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-} from "recharts";
+  COLORS,
+  EXPENSE_CATEGORY_ICONS,
+  GAUGE_COLORS,
+  INCOME_CATEGORY_ICONS,
+} from "../assets/color";
 
 const API_BASE = "http://localhost:7339/api";
 
@@ -768,6 +771,14 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <AddTransactionModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        newTransaction={newTransaction}
+        setNewTransaction={setNewTransaction}
+        handleAddTransaction={handleTransaction}
+        loading={loading}
+      />
     </div>
   );
 };
