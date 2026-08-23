@@ -1,6 +1,7 @@
 import { transactionItemStyles } from "../assets/dummyStyles";
 import { colorClasses } from "../assets/color";
 import { useState } from "react";
+import { DollarSign } from "lucide-react";
 
 const TransactionItem = ({
   transaction,
@@ -51,7 +52,42 @@ const TransactionItem = ({
     }
   };
 
-  return <div>TransactionItem</div>;
+  return (
+    <div className={transactionItemStyles.container(isEditing, classes)}>
+      <div className={transactionItemStyles.mainContainer}>
+        <div
+          className={transactionItemStyles.iconContainer(iconClass, classes)}
+        >
+          {categoryIcons[transaction.category] || (
+            <DollarSign className="w-5 h-5" />
+          )}
+        </div>
+
+        <div className={transactionItemStyles.contentContainer}>
+          {isEditing ? (
+            <>
+              <input
+                type="text"
+                value={editForm.description}
+                onChange={(e) =>
+                  setEditForm((prev) => ({
+                    ...prev,
+                    description: e.target.value,
+                  }))
+                }
+                className={transactionItemStyles.input(
+                  !!errors.description,
+                  classes,
+                )}
+              />
+            </>
+          ) : (
+            <></>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default TransactionItem;
