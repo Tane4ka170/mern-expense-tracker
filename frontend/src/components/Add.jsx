@@ -85,11 +85,11 @@ const AddTransactionModal = ({
                 onChange={(e) => {
                   setNewTransaction((prev) => ({
                     ...prev,
-                    description: e.target.value,
+                    amount: e.target.value,
                   }));
                 }}
                 className={modalStyles.input(colorClass.ring)}
-                placeholder="o.00"
+                placeholder="0.00"
                 required
               />
             </div>
@@ -133,7 +133,10 @@ const AddTransactionModal = ({
               <select
                 value={newTransaction.category}
                 onChange={(e) =>
-                  setNewTransaction({ ...prev, category: e.target.value })
+                  setNewTransaction((prev) => ({
+                    ...prev,
+                    category: e.target.value,
+                  }))
                 }
                 className={modalStyles.input(colorClass.ring)}
               >
@@ -151,7 +154,10 @@ const AddTransactionModal = ({
                 type="date"
                 value={newTransaction.date}
                 onChange={(e) => {
-                  newTransaction((prev) => ({ ...prev, date: e.target.value }));
+                  setNewTransaction((prev) => ({
+                    ...prev,
+                    date: e.target.value,
+                  }));
                 }}
                 className={modalStyles.input(colorClass.ring)}
                 min={minDate}
