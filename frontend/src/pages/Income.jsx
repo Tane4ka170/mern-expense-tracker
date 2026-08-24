@@ -33,6 +33,7 @@ import { incomeStyles as styles } from "../assets/dummyStyles";
 
 const API_BASE = "http://localhost:7339/api";
 
+// Helps in covering date to ISO time
 function toIsoWithClientTime(dateValue) {
   if (!dateValue) {
     return new Date().toISOString();
@@ -52,6 +53,7 @@ function toIsoWithClientTime(dateValue) {
   }
 }
 
+// Small component
 const IncomeChart = ({ chartData, timeFrame, timeFrameRange }) => (
   <div className={styles.chartContainer}>
     <div className={styles.chartHeaderContainer}>
@@ -137,8 +139,9 @@ const IncomeChart = ({ chartData, timeFrame, timeFrameRange }) => (
       </ResponsiveContainer>
     </div>
   </div>
-);
+); //for income chart
 
+// Small component
 const FilterSection = ({ filter, setFilter, handleExport }) => (
   <div className={styles.filterContainer}>
     <div className="relative w-full sm:w-auto">
@@ -163,7 +166,7 @@ const FilterSection = ({ filter, setFilter, handleExport }) => (
       <Download size={16} className="md:size-4" /> Export
     </button>
   </div>
-);
+); // added for filtering the data
 
 const Income = () => {
   const {
@@ -199,6 +202,7 @@ const Income = () => {
     date: new Date().toISOString().split("T")[0],
   });
 
+  // To get the token from locals
   const getAuthHeaders = useCallback(() => {
     const token = localStorage.getItem("token");
     return token ? { Authorization: `Bearer ${token}` } : {};
@@ -213,6 +217,7 @@ const Income = () => {
     [timeFrame, timeFrameRange],
   );
 
+  // Function to cheek if a date is within a range or not
   const isDateInRange = useCallback((date, start, end) => {
     const transactionDate = new Date(date);
     const startDate = new Date(start);
@@ -231,7 +236,7 @@ const Income = () => {
         .filter((t) => t.type === "income")
         .sort((a, b) => new Date(b.date) - new Date(a.date)),
     [outletTransactions],
-  );
+  ); // filter transactions coming from outlet context
 
   const timeFrameTransactions = useMemo(
     () =>
