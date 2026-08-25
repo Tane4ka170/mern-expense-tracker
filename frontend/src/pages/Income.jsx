@@ -244,7 +244,7 @@ const Income = () => {
         isDateInRange(t.date, timeFrameRange.start, timeFrameRange.end),
       ),
     [incomeTransactions, timeFrameRange, isDateInRange],
-  );
+  ); //filter by timeframe
 
   const filteredTransactions = useMemo(() => {
     if (filter === "all") return timeFrameTransactions;
@@ -285,6 +285,7 @@ const Income = () => {
     return data;
   }, [filteredTransactions, chartPoints, timeFrame]);
 
+  // Fetch the overview from the server side
   const fetchOverview = useCallback(
     async (range = timeFrame ?? "monthly") => {
       try {
@@ -337,13 +338,14 @@ const Income = () => {
             )
           : 0,
     [overview.averageIncome, filteredTransactions],
-  );
+  ); //use backend overview if available
 
   const transactionsCount = useMemo(
     () => overview.numberOfTransactions ?? filteredTransactions.length,
     [overview.numberOfTransactions, filteredTransactions],
   );
 
+  // To add an income
   const handleAddTransaction = useCallback(async () => {
     if (!newTransaction.description || !newTransaction.amount) return;
 
@@ -386,6 +388,7 @@ const Income = () => {
     timeFrame,
   ]);
 
+  // To update an income
   const handleEditTransaction = useCallback(async () => {
     if (!editingId || !editForm.description || !editForm.amount) return;
 
@@ -423,6 +426,7 @@ const Income = () => {
     timeFrame,
   ]);
 
+  // To delete an income transactions
   const handleDeleteTransaction = useCallback(
     async (id) => {
       if (!id) return;
@@ -448,6 +452,7 @@ const Income = () => {
     [getAuthHeaders, refreshTransactions, fetchOverview, timeFrame],
   );
 
+  //  To download excel sheet
   const handleExport = useCallback(async () => {
     try {
       const res = await axios.get(`${API_BASE}/income/downloadexcel`, {
@@ -491,6 +496,7 @@ const Income = () => {
     }
   }, [getAuthHeaders, filteredTransactions]);
 
+  //  Rest is the UI part
   return (
     <div className={styles.wrapper}>
       <div className={styles.headerContainer}>
