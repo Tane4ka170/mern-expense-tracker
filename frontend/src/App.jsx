@@ -13,6 +13,7 @@ import SignUp from "./components/SignUp";
 import axios from "axios";
 import Income from "./pages/Income";
 import Expense from "./pages/Expense";
+import Profile from "./pages/Profile";
 
 const API_URL = "http://localhost:7339";
 
@@ -250,6 +251,8 @@ const App = () => {
               />
             }
           />
+
+          <Route path="/profile" element={<Profile user={user} />} />
         </Route>
       </Routes>
     </>
