@@ -2,7 +2,9 @@ import { Eye, EyeOff } from "lucide-react";
 import { profileStyles } from "../assets/dummyStyles";
 import Modal from "react-modal";
 import { useNavigate } from "react-router-dom";
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const BASE_URL = "http://localhost:7339/api";
 
@@ -72,7 +74,88 @@ const Profile = ({ user: onUpdateProfile, onLogout }) => {
   const getAuthToken = useCallback(() => localStorage.getItem("authToken"), []);
 
   // Api request
-  const handleApiRequest = useCallback();
+  const handleApiRequest = useCallback(
+    async (method, endpoint, data) => {
+      const token = getAuthToken();
+      if (!token) {
+        navigate("/login");
+        return null;
+      }
+
+      try {
+        setLoading(true);
+        const config = {
+          method,
+          url: `${BASE_URL}${endpoint}`,
+          headers: { Authorization: `Bearer ${token}` },
+        };
+        if (data) config.data = data;
+
+        const response = await axios(config);
+        return response.data;
+      } catch (error) {
+        console.error(`${method} request error:`, error);
+        if (error.response?.status === 401) {
+          navigate("/login");
+        }
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [getAuthToken, navigate],
+  );
+
+  // To fetch current user
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const data = await handleApiRequest("/get", "/user/me");
+        if (data) {
+          const userData = data.user || data;
+          setUser(userData);
+          setTempUser(userData);
+        }
+      } catch (error) {
+        toast.error("Failed to load user data");
+      }
+    };
+    fetchUserData();
+  }, [handleApiRequest]);
+
+  // Input change
+  const handleInputChange = useCallback((e) => {
+    const { name, value } = e.target;
+    setTempUser((prev) => ({ ...prev, [name]: value }));
+  }, []);
+
+  const handlePasswordChange = useCallback((e) => {
+    const { name, value } = e.target;
+    setPasswordData((prev) => ({ ...prev, [name]: value }));
+    // Clear error for this field when user starts typing
+    setPasswordErrors((prev) => ({ ...prev, [name]: "" }));
+  }, []);
+
+  // Password visibility toggle
+  const togglePasswordVisibility = useCallback((field) => {
+    setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
+  }, []);
+
+  // Password validation
+  const validatePassword = useCallback(() => {
+    const errors = {};
+    if (!passwordData.current) errors.current = "Current password is required";
+    if (!passwordData.new) {
+      errors.new = "New password is required";
+    } else if (passwordData.new.length < 8) {
+      errors.new = "Password must be at least 8 characters";
+    }
+    if (passwordData.new !== passwordData.confirm) {
+      errors.confirm = "Passwords do not match";
+    }
+    setPasswordErrors(errors);
+    return Object.keys(errors).length === 0;
+  }, [passwordData]);
 
   return <div>Profile</div>;
 };
