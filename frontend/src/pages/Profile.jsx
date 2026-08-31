@@ -117,7 +117,7 @@ const Profile = ({ user: onUpdateProfile, onLogout }) => {
           setTempUser(userData);
         }
       } catch (error) {
-        toast.error("Failed to load user data");
+        toast.error("Failed to load user data", error);
       }
     };
     fetchUserData();
@@ -156,6 +156,38 @@ const Profile = ({ user: onUpdateProfile, onLogout }) => {
     setPasswordErrors(errors);
     return Object.keys(errors).length === 0;
   }, [passwordData]);
+
+  const handleSaveProfile = async () => {
+    try {
+      const data = await handleApiRequest("put", "/user/profile", tempUser);
+      if (data) {
+        const updatedUser = data.user || data;
+        setUser(updatedUser);
+        setTempUser(updatedUser);
+        setEditMode(false);
+
+        onUpdateProfile?.(updatedUser);
+        toast.success("Profile updated successfully");
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to update profile");
+    }
+  };
+
+  const handleCancelEdit = useCallback(() => {
+    setTempUser(user);
+    setEditMode(false);
+  }, [user]);
+
+  // To change password
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    if (!validatePassword()) return;
+
+    try {
+      await handleApiRequest("put", "/user/password", passwordData);
+    } catch (error) {}
+  };
 
   return <div>Profile</div>;
 };
