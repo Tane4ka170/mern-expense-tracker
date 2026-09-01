@@ -185,10 +185,45 @@ const Profile = ({ user: onUpdateProfile, onLogout }) => {
     if (!validatePassword()) return;
 
     try {
-      await handleApiRequest("put", "/user/password", passwordData);
-    } catch (error) {}
+      await handleApiRequest("put", "/user/password", {
+        currentPassword: passwordData.current,
+        newPassword: passwordData.new,
+      });
+      toast.success("Password changed successfully");
+      setShowPasswordModal(false);
+      setPasswordData({
+        current: "",
+        new: "",
+        confirm: "",
+      });
+      setPasswordErrors({});
+
+      // Reset password visibility
+      setShowPassword({ current: false, new: false, confirm: false });
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to update profile");
+    }
   };
 
+  const handleLogout = useCallback(() => {
+    onLogout?.();
+    navigate("/signup");
+  }, [onLogout, navigate]);
+
+  const closePasswordModal = useCallback(() => {
+    if (!loading) {
+      setShowPasswordModal(false);
+      setPasswordData({
+        current: "",
+        new: "",
+        confirm: "",
+      });
+      setPasswordErrors({});
+
+      // Reset password visibility
+      setShowPassword({ current: false, new: false, confirm: false });
+    }
+  }, [loading]);
   return <div>Profile</div>;
 };
 
