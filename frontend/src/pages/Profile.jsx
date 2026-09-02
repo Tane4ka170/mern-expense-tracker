@@ -4,7 +4,7 @@ import Modal from "react-modal";
 import { useNavigate } from "react-router-dom";
 import { memo, useCallback, useEffect, useState } from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 const BASE_URL = "http://localhost:7339/api";
 
@@ -224,7 +224,22 @@ const Profile = ({ user: onUpdateProfile, onLogout }) => {
       setShowPassword({ current: false, new: false, confirm: false });
     }
   }, [loading]);
-  return <div>Profile</div>;
+  return (
+    <div className={profileStyles.container}>
+      {" "}
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </div>
+  );
 };
 
 export default Profile;
