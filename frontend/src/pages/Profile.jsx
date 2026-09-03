@@ -1,4 +1,4 @@
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, User } from "lucide-react";
 import { profileStyles } from "../assets/dummyStyles";
 import Modal from "react-modal";
 import { useNavigate } from "react-router-dom";
@@ -238,6 +238,19 @@ const Profile = ({ user: onUpdateProfile, onLogout }) => {
         draggable
         pauseOnHover
       />
+      <div className={profileStyles.mainContainer}>
+        <div className={profileStyles.header}>
+          <div className={profileStyles.avatar}>
+            <User className="w-12 h-12 text-white" />
+          </div>
+          <h1 className={profileStyles.userName}>
+            {user.name || "Loading..."}
+          </h1>
+          <p className={profileStyles.userEmail}>
+            {user.email || "Loading..."}
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
