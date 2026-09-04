@@ -250,6 +250,19 @@ const Profile = ({ user: onUpdateProfile, onLogout }) => {
             {user.email || "Loading..."}
           </p>
         </div>
+
+        <div className={profileStyles.mainContainer}>
+          <div className={profileStyles.grid}>
+            <div className={profileStyles.card}>
+              <div className="flex justify-between items-center mb-6">
+                <h2 className={profileStyles.cardTitle}>
+                  <User className={profileStyles.icon} /> Personal Information
+                </h2>
+                {!editMode && <button onClick={}></button>}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
