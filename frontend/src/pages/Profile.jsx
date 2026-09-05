@@ -258,8 +258,63 @@ const Profile = ({ user: onUpdateProfile, onLogout }) => {
                 <h2 className={profileStyles.cardTitle}>
                   <User className={profileStyles.icon} /> Personal Information
                 </h2>
-                {!editMode && <button onClick={}></button>}
+                {!editMode && (
+                  <button
+                    onClick={() => setEditMode(true)}
+                    className={profileStyles.editButton}
+                    disabled={loading}
+                  >
+                    {loading ? "Loading..." : "Edit"}
+                  </button>
+                )}
               </div>
+
+              {editMode ? (
+                <div className="space-y-4">
+                  <div>
+                    <label className={profileStyles.label}>Full Name</label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={tempUser.name}
+                      onChange={handleInputChange}
+                      className={profileStyles.input}
+                      disabled={loading}
+                    />
+                  </div>
+                  <div>
+                    <label className={profileStyles.label}>Email Address</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={tempUser.email}
+                      onChange={handleInputChange}
+                      className={profileStyles.input}
+                      disabled={loading}
+                    />
+                  </div>
+
+                  <div className="flex gap-3 pt-4">
+                    <button
+                      onClick={handleSaveProfile}
+                      className={profileStyles.buttonPrimary}
+                      disabled={loading}
+                    >
+                      {loading ? "Saving..." : "Save Changes"}
+                    </button>
+
+                    <button
+                      onClick={handleCancelEdit}
+                      className={profileStyles.buttonSecondary}
+                      disabled={loading}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4"></div>
+              )}
             </div>
           </div>
         </div>
